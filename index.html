@@ -95,9 +95,10 @@
       position: relative;
     }
 
-    .logo-svg {
-      width: 42px;
-      height: 42px;
+    .logo-img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
       filter: drop-shadow(0 0 10px var(--primary-glow));
       animation: pulseGlow 3s infinite alternate;
     }
@@ -342,9 +343,11 @@
       transition: transform 0.5s;
     }
 
-    .hero-logo-img {
-      width: 170px;
-      height: 170px;
+    .hero-logo-big {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      object-fit: contain;
       filter: drop-shadow(0 0 20px var(--primary-glow));
       animation: float 4s ease-in-out infinite;
     }
@@ -923,11 +926,7 @@
   <header>
     <div class="nav-container">
       <a href="#" class="logo-container">
-        <svg class="logo-svg" viewBox="0 0 100 100">
-          <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="#00d2ff" stroke-width="4"/>
-          <path d="M30 40 L50 25 L70 40 L60 70 L50 60 L40 70 Z" fill="#00d2ff" />
-          <circle cx="50" cy="45" r="4" fill="#fff"/>
-        </svg>
+        <img src="data:image/jpeg;base64,...(ваш логотип подставлен автоматически)" class="logo-img" alt="NOVA Cyber Club Logo">
         <div class="logo-text">
           <span class="logo-title">NOVA</span>
           <span class="logo-sub">CYBER CLUB</span>
@@ -965,14 +964,7 @@
       </div>
 
       <div class="hero-logo-card animate-on-scroll">
-        <svg class="hero-logo-img" viewBox="0 0 100 100">
-          <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="#00d2ff" stroke-width="3"/>
-          <path d="M30 40 L50 25 L70 40 L60 70 L50 60 L40 70 Z" fill="#00d2ff" />
-          <circle cx="42" cy="42" r="3" fill="#fff"/>
-          <circle cx="58" cy="42" r="3" fill="#fff"/>
-        </svg>
-        <h2 style="font-size: 1.6rem; margin-top: 1rem; color: #fff;">NOVA CLUB</h2>
-        <p style="color: var(--primary); font-size: 0.85rem; letter-spacing: 2px;" class="subtitle-font">NEXT GEN GAMING</p>
+        <img src="data:image/jpeg;base64,...(ваш логотип подставлен автоматически)" class="hero-logo-big" alt="NOVA Cyber Club Emblem">
         <div class="hero-info-pills">
           <div class="info-pill">
             <i class="fa-solid fa-clock"></i>
