@@ -459,14 +459,13 @@
     }
 
     .badge-zone {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
+      display: inline-block;
       padding: 0.3rem 0.8rem;
       border-radius: 6px;
       font-family: 'Orbitron', sans-serif;
       font-size: 0.7rem;
       font-weight: 700;
+      margin-bottom: 0.8rem;
     }
 
     .badge-standard {
@@ -488,6 +487,7 @@
     .spec-title {
       font-size: 1.4rem;
       color: #fff;
+      word-break: break-word;
     }
 
     .spec-list {
@@ -965,7 +965,7 @@
       </div>
 
       <div class="hero-logo-card animate-on-scroll">
-        <img src="https://pashabiceps25.github.io/nova/logo.PNG" class="hero-logo-big" alt="NOVA Cyber Club Emblem">
+        <img src="https://pashabiceps25.github.io/nova/logo.PNG" class="logo-logo-big" class="hero-logo-big" alt="NOVA Cyber Club Emblem" style="width: 100%; max-width: 220px; height: auto; object-fit: contain; filter: drop-shadow(0 0 20px var(--primary-glow)); animation: float 4s ease-in-out infinite;">
         <div class="hero-info-pills">
           <div class="info-pill">
             <i class="fa-solid fa-clock"></i>
@@ -1120,7 +1120,7 @@
       <div class="price-card animate-on-scroll">
         <div class="price-card-header">
           <span class="badge-zone badge-standard">STANDART</span>
-          <h3 style="font-size: 1.4rem; color: #fff; margin-top: 0.5rem;">Standart Зал</h3>
+          <h3 class="spec-title" style="font-size: 1.4rem; color: #fff; margin-top: 0.2rem;">Standart Зал</h3>
         </div>
         <div class="price-rows">
           <p class="price-time-slot"><i class="fa-regular fa-sun"></i> Дневное время (08:00 - 17:00)</p>
@@ -1166,7 +1166,7 @@
       <div class="price-card vip animate-on-scroll">
         <div class="price-card-header">
           <span class="badge-zone badge-vip">VIP</span>
-          <h3 style="font-size: 1.4rem; color: var(--gold); margin-top: 0.5rem;">VIP Зал</h3>
+          <h3 class="spec-title" style="font-size: 1.4rem; color: var(--gold); margin-top: 0.2rem;">VIP Зал</h3>
         </div>
         <div class="price-rows">
           <p class="price-time-slot"><i class="fa-regular fa-sun"></i> Дневное время (08:00 - 17:00)</p>
@@ -1214,7 +1214,7 @@
   <section id="booking">
     <div class="section-header animate-on-scroll">
       <h2 class="section-title">Калькулятор и Бронь</h2>
-      <p class="section-subtitle">Выбери тариф и рассчитай стоимость перед отправкой брони</p>
+      <p class="section-subtitle">Выбери тариф, количество ПК и рассчитай стоимость</p>
     </div>
 
     <div class="calc-booking-container animate-on-scroll">
@@ -1252,6 +1252,19 @@
             </select>
           </div>
           <div class="form-group">
+            <label class="form-label">Количество ПК (мест)</label>
+            <select id="pcCount" class="form-select" onchange="calculateTotal()">
+              <option value="1">1 ПК (1 человек)</option>
+              <option value="2">2 ПК (на двоих)</option>
+              <option value="3">3 ПК</option>
+              <option value="4">4 ПК (компания)</option>
+              <option value="5">5 ПК</option>
+              <option value="6">6 ПК</option>
+              <option value="8">8 ПК</option>
+              <option value="10">10 ПК (тим)</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="form-label">Желаемая дата и время визита</label>
             <input type="text" id="custTime" class="form-control" placeholder="Например: Сегодня в 20:00" required>
           </div>
@@ -1261,7 +1274,7 @@
       <div class="calc-summary">
         <div>
           <h3 style="color: #fff; margin-bottom: 0.8rem; font-size: 1.2rem;">Итого к оплате</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem;">Расчет производится автоматически по официальной тарифной сетке клуба NOVA.</p>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Расчет производится автоматически с учетом выбранного количества компьютеров.</p>
         </div>
 
         <div class="total-price-display">
@@ -1334,10 +1347,10 @@
     </div>
   </section>
 
-  <!-- Mobile Fixed Action Bar (Переправляет к выбору тарифа) -->
+  <!-- Mobile Fixed Action Bar -->
   <div class="mobile-fixed-bar">
     <a href="#booking" class="btn btn-primary" style="width: 100%; padding: 0.8rem; text-decoration: none;">
-      <i class="fa-solid fa-calculator" style="font-size: 1.1rem;"></i> Забронировать ПК
+      <i class="fa-solid fa-calculator" style="font-size: 1.1rem;"></i> Выбрать тариф и ПК
     </a>
   </div>
 
@@ -1402,16 +1415,20 @@
     function calculateTotal() {
       const zone = document.getElementById('zoneSelect').value;
       const timeSlot = document.getElementById('timeSelect').value;
-      const cost = prices[zone][timeSlot];
+      const pcCount = parseInt(document.getElementById('pcCount').value) || 1;
       
-      document.getElementById('totalPrice').innerText = cost.toLocaleString() + ' KZT';
-      return cost;
+      const costPerPC = prices[zone][timeSlot];
+      const totalCost = costPerPC * pcCount;
+      
+      document.getElementById('totalPrice').innerText = totalCost.toLocaleString() + ' KZT';
+      return totalCost;
     }
 
     function sendWhatsApp() {
       const name = document.getElementById('custName').value.trim() || 'Клиент';
       const zone = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
       const tariff = document.getElementById('timeSelect').options[document.getElementById('timeSelect').selectedIndex].text;
+      const pcCount = document.getElementById('pcCount').value;
       const time = document.getElementById('custTime').value.trim() || 'Ближайшее время';
       const total = calculateTotal();
 
@@ -1419,6 +1436,7 @@
                       `Хочу забронировать ПК:\n` +
                       `👤 Имя: ${name}\n` +
                       `🖥 Зона: ${zone}\n` +
+                      `💻 Количество ПК: ${pcCount} шт.\n` +
                       `⏱ Тариф: ${tariff}\n` +
                       `📅 Время: ${time}\n` +
                       `💰 Сумма: ${total} KZT\n\n` +
