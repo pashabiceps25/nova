@@ -18,15 +18,21 @@
       --accent-glow: rgba(255, 0, 85, 0.4);
       --text-main: #f0f4f8;
       --text-muted: #8a99ad;
-      --border-color: rgba(0, 210, 255, 0.15);
-      --border-gold: rgba(255, 183, 3, 0.3);
+      --border-color: rgba(0, 210, 255, 0.18);
+      --border-gold: rgba(255, 183, 3, 0.4);
       --gold: #ffb703;
+      --gold-glow: rgba(255, 183, 3, 0.4);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -47,17 +53,29 @@
       font-family: 'Rajdhani', sans-serif;
     }
 
-    /* Header */
+    /* Scroll Animations */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Header & Mobile Nav */
     header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 1000;
-      background: rgba(5, 8, 17, 0.9);
-      backdrop-filter: blur(12px);
+      background: rgba(5, 8, 17, 0.92);
+      backdrop-filter: blur(15px);
       border-bottom: 1px solid var(--border-color);
-      transition: all 0.3s;
+      transition: all 0.3s ease;
     }
 
     .nav-container {
@@ -66,24 +84,31 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.8rem 1.5rem;
+      padding: 0.8rem 1.2rem;
     }
 
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
+      position: relative;
     }
 
     .logo-svg {
-      width: 45px;
-      height: 45px;
-      filter: drop-shadow(0 0 8px var(--primary-glow));
+      width: 42px;
+      height: 42px;
+      filter: drop-shadow(0 0 10px var(--primary-glow));
+      animation: pulseGlow 3s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { filter: drop-shadow(0 0 5px var(--primary-glow)); }
+      100% { filter: drop-shadow(0 0 18px rgba(0, 210, 255, 0.8)); }
     }
 
     .logo-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: #fff;
       line-height: 1;
@@ -93,7 +118,7 @@
     }
 
     .logo-sub {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--primary);
       letter-spacing: 3px;
       margin-top: 2px;
@@ -113,36 +138,48 @@
       font-family: 'Rajdhani', sans-serif;
       font-weight: 600;
       font-size: 1.1rem;
-      transition: color 0.3s, text-shadow 0.3s;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+      transition: width 0.3s;
     }
 
     .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
       color: var(--primary);
-      text-shadow: 0 0 8px var(--primary-glow);
-    }
-
-    .nav-cta {
-      background: linear-gradient(135deg, var(--secondary), var(--primary));
-      color: #000 !important;
-      font-weight: 800 !important;
-      padding: 0.5rem 1.2rem;
-      border-radius: 4px;
-      box-shadow: 0 0 15px var(--primary-glow);
-      transition: transform 0.2s !important;
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-2px);
+      font-size: 1.6rem;
+      cursor: pointer;
+      z-index: 1001;
     }
 
     /* Hero Section */
     .hero {
       position: relative;
-      min-height: 90vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 8rem 1.5rem 4rem;
-      background: radial-gradient(circle at 50% 30%, rgba(0, 210, 255, 0.12) 0%, rgba(5, 8, 17, 1) 70%);
+      padding: 7rem 1.2rem 4rem;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.15) 0%, rgba(5, 8, 17, 1) 75%);
       overflow: hidden;
     }
 
@@ -152,8 +189,33 @@
       background-image: 
         linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
-      background-size: 40px 40px;
+      background-size: 35px 35px;
       z-index: 1;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 35px 35px; }
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      top: 10%;
+      right: 10%;
+      filter: blur(50px);
+      pointer-events: none;
+      z-index: 1;
+      animation: orbFloat 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-40px, 40px) scale(1.2); }
     }
 
     .hero-content {
@@ -164,7 +226,7 @@
       z-index: 2;
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
-      gap: 3rem;
+      gap: 2.5rem;
       align-items: center;
     }
 
@@ -181,10 +243,11 @@
       margin-bottom: 1.2rem;
       font-family: 'Rajdhani', sans-serif;
       font-weight: 700;
+      box-shadow: 0 0 15px var(--primary-glow);
     }
 
     .hero-title {
-      font-size: 3.2rem;
+      font-size: 3rem;
       line-height: 1.1;
       margin-bottom: 1.2rem;
       color: #fff;
@@ -199,7 +262,7 @@
 
     .hero-desc {
       color: var(--text-muted);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       margin-bottom: 2rem;
       max-width: 550px;
     }
@@ -211,18 +274,35 @@
     }
 
     .btn {
-      padding: 0.9rem 2rem;
-      border-radius: 6px;
+      padding: 0.9rem 1.8rem;
+      border-radius: 8px;
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-decoration: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: rotate(30deg) translateY(-100%);
+      transition: transform 0.6s;
+    }
+
+    .btn:hover::after {
+      transform: rotate(30deg) translateY(100%);
     }
 
     .btn-primary {
@@ -233,67 +313,60 @@
 
     .btn-primary:hover {
       box-shadow: 0 0 30px rgba(0, 210, 255, 0.8);
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
     }
 
     .btn-outline {
-      background: transparent;
+      background: rgba(13, 19, 34, 0.6);
       color: #fff;
       border: 1px solid var(--border-color);
+      backdrop-filter: blur(5px);
     }
 
     .btn-outline:hover {
       border-color: var(--primary);
       color: var(--primary);
       box-shadow: 0 0 15px var(--primary-glow);
+      transform: translateY(-3px);
     }
 
     .hero-logo-card {
-      background: rgba(13, 19, 34, 0.6);
+      background: rgba(13, 19, 34, 0.65);
       border: 1px solid var(--border-color);
       border-radius: 20px;
-      padding: 2.5rem;
+      padding: 2.2rem 1.5rem;
       text-align: center;
       position: relative;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-    }
-
-    .hero-logo-card::before {
-      content: '';
-      position: absolute;
-      top: -2px; left: -2px; right: -2px; bottom: -2px;
-      background: linear-gradient(45deg, var(--primary), transparent, var(--accent));
-      border-radius: 22px;
-      z-index: -1;
-      opacity: 0.4;
+      backdrop-filter: blur(12px);
+      transition: transform 0.5s;
     }
 
     .hero-logo-img {
-      width: 180px;
-      height: 180px;
+      width: 170px;
+      height: 170px;
       filter: drop-shadow(0 0 20px var(--primary-glow));
       animation: float 4s ease-in-out infinite;
     }
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-12px); }
     }
 
     .hero-info-pills {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 0.8rem;
       margin-top: 1.5rem;
     }
 
     .info-pill {
       background: rgba(5, 8, 17, 0.8);
-      padding: 0.8rem;
-      border-radius: 8px;
+      padding: 0.8rem 0.5rem;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .info-pill i {
@@ -305,18 +378,18 @@
 
     /* Shared Sections */
     section {
-      padding: 5rem 1.5rem;
+      padding: 4.5rem 1.2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 3.5rem;
+      margin-bottom: 3rem;
     }
 
     .section-title {
-      font-size: 2.2rem;
+      font-size: 2rem;
       color: #fff;
       margin-bottom: 0.5rem;
       display: inline-block;
@@ -326,37 +399,50 @@
     .section-title::after {
       content: '';
       display: block;
-      width: 60%;
+      width: 70%;
       height: 3px;
       background: linear-gradient(90deg, transparent, var(--primary), transparent);
       margin: 8px auto 0;
+      box-shadow: 0 0 10px var(--primary-glow);
     }
 
     .section-subtitle {
       color: var(--text-muted);
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-family: 'Rajdhani', sans-serif;
     }
 
-    /* Hardware Specs Section */
+    /* Hardware Specs */
     .specs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
     }
 
     .spec-card {
       background: var(--bg-card);
-      border-radius: 12px;
-      padding: 2rem;
+      border-radius: 16px;
+      padding: 1.8rem;
       border: 1px solid var(--border-color);
       position: relative;
-      transition: all 0.3s;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      overflow: hidden;
+    }
+
+    .spec-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+    }
+
+    .spec-card.vip::before {
+      background: linear-gradient(90deg, var(--gold), transparent);
     }
 
     .spec-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 210, 255, 0.2);
       border-color: var(--primary);
     }
 
@@ -365,7 +451,7 @@
     }
 
     .spec-card.vip:hover {
-      box-shadow: 0 10px 30px rgba(255, 183, 3, 0.2);
+      box-shadow: 0 15px 35px rgba(255, 183, 3, 0.25);
       border-color: var(--gold);
     }
 
@@ -374,9 +460,9 @@
       top: 1.5rem;
       right: 1.5rem;
       padding: 0.3rem 0.8rem;
-      border-radius: 4px;
+      border-radius: 6px;
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
     }
 
@@ -397,7 +483,7 @@
     }
 
     .spec-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: #fff;
     }
 
@@ -405,14 +491,14 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.9rem;
     }
 
     .spec-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding-bottom: 0.8rem;
+      padding-bottom: 0.7rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
@@ -439,14 +525,13 @@
     }
 
     .spec-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .spec-val {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: #fff;
     }
@@ -454,32 +539,43 @@
     /* Pricing Section */
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5rem;
     }
 
     .price-card {
       background: var(--bg-card);
       border-radius: 16px;
-      padding: 2rem;
+      padding: 1.8rem;
       border: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       position: relative;
+      transition: all 0.3s;
+    }
+
+    .price-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
     }
 
     .price-card.vip {
       border-color: var(--border-gold);
     }
 
+    .price-card.vip:hover {
+      border-color: var(--gold);
+      box-shadow: 0 10px 30px rgba(255, 183, 3, 0.2);
+    }
+
     .price-card-header {
-      padding-bottom: 1.5rem;
+      padding-bottom: 1.2rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
     }
 
     .price-time-slot {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--primary);
       margin-top: 0.3rem;
       font-weight: 600;
@@ -492,7 +588,7 @@
     .price-rows {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 0.7rem;
       margin-bottom: 1.5rem;
       flex-grow: 1;
     }
@@ -503,11 +599,11 @@
       align-items: center;
       padding: 0.6rem 0.8rem;
       background: rgba(255, 255, 255, 0.02);
-      border-radius: 6px;
+      border-radius: 8px;
     }
 
     .price-row-label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
 
@@ -515,15 +611,15 @@
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
       color: #fff;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     .package-box {
       background: rgba(0, 210, 255, 0.05);
       border: 1px dashed var(--primary);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 1rem;
+      border-radius: 10px;
+      padding: 0.9rem;
+      margin-top: 0.6rem;
       text-align: center;
     }
 
@@ -533,14 +629,14 @@
     }
 
     .package-title {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       text-transform: uppercase;
     }
 
     .package-val {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 900;
       color: #fff;
       margin-top: 2px;
@@ -551,11 +647,12 @@
       background: var(--bg-card);
       border-radius: 20px;
       border: 1px solid var(--border-color);
-      padding: 2.5rem;
+      padding: 2rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      gap: 2rem;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
     }
 
     .form-group {
@@ -564,34 +661,34 @@
 
     .form-label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       text-transform: uppercase;
       font-weight: 600;
     }
 
     .form-control, .form-select {
       width: 100%;
-      padding: 0.8rem 1rem;
+      padding: 0.82rem 1rem;
       background: var(--bg-dark);
-      border: 1px solid rgba(0, 210, 255, 0.2);
-      border-radius: 6px;
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      border-radius: 8px;
       color: #fff;
       font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      transition: border-color 0.3s;
+      font-size: 0.9rem;
+      transition: all 0.3s;
     }
 
     .form-control:focus, .form-select:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 10px var(--primary-glow);
+      box-shadow: 0 0 12px var(--primary-glow);
     }
 
     .calc-summary {
       background: var(--bg-dark);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 1.5rem;
       border: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
@@ -605,18 +702,24 @@
     }
 
     .total-price-label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
       text-transform: uppercase;
     }
 
     .total-price-value {
       font-family: 'Orbitron', sans-serif;
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       font-weight: 900;
       color: var(--primary);
       text-shadow: 0 0 15px var(--primary-glow);
       margin-top: 0.3rem;
+      animation: pulsePrice 2s infinite alternate;
+    }
+
+    @keyframes pulsePrice {
+      0% { text-shadow: 0 0 10px var(--primary-glow); }
+      100% { text-shadow: 0 0 25px rgba(0, 210, 255, 0.9); }
     }
 
     /* Contacts & Map */
@@ -629,8 +732,8 @@
 
     .contact-card {
       background: var(--bg-card);
-      border-radius: 12px;
-      padding: 2rem;
+      border-radius: 16px;
+      padding: 1.8rem;
       border: 1px solid var(--border-color);
     }
 
@@ -638,7 +741,7 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.3rem;
     }
 
     .contact-item a {
@@ -652,8 +755,8 @@
     }
 
     .contact-icon {
-      width: 45px;
-      height: 45px;
+      width: 44px;
+      height: 44px;
       background: rgba(0, 210, 255, 0.1);
       border: 1px solid var(--primary);
       border-radius: 10px;
@@ -661,15 +764,16 @@
       align-items: center;
       justify-content: center;
       color: var(--primary);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       flex-shrink: 0;
+      box-shadow: 0 0 10px var(--primary-glow);
     }
 
     .map-placeholder {
       width: 100%;
-      height: 380px;
+      height: 360px;
       background: var(--bg-card);
-      border-radius: 12px;
+      border-radius: 16px;
       border: 1px solid var(--border-color);
       overflow: hidden;
       position: relative;
@@ -682,11 +786,26 @@
       filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
     }
 
+    /* Fixed Mobile Action Bar */
+    .mobile-fixed-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(5, 8, 17, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border-color);
+      padding: 0.8rem 1.2rem;
+      z-index: 999;
+      box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.8);
+    }
+
     /* Footer */
     footer {
       background: #020408;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 3rem 1.5rem 1.5rem;
+      padding: 3rem 1.2rem 5rem;
       text-align: center;
     }
 
@@ -696,7 +815,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
     }
 
     .social-links {
@@ -705,10 +824,11 @@
     }
 
     .social-btn {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -720,31 +840,80 @@
     .social-btn:hover {
       background: var(--primary);
       color: #000;
-      transform: translateY(-3px);
+      transform: translateY(-4px);
+      box-shadow: 0 0 15px var(--primary-glow);
     }
 
+    /* Responsive Breakpoints */
     @media (max-width: 992px) {
       .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
       }
+
       .hero-btns {
         justify-content: center;
       }
+
+      .hero-desc {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
       .calc-booking-container {
         grid-template-columns: 1fr;
+        padding: 1.5rem;
       }
+
       .contacts-grid {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 768px) {
-      .nav-links {
-        display: none;
+      .mobile-menu-btn {
+        display: block;
       }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75%;
+        height: 100vh;
+        background: rgba(13, 19, 34, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: right 0.4s ease;
+        border-left: 1px solid var(--border-color);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .hero {
+        padding-top: 6rem;
+      }
+
       .hero-title {
         font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .mobile-fixed-bar {
+        display: block;
+      }
+
+      footer {
+        padding-bottom: 5.5rem;
       }
     }
   </style>
@@ -765,21 +934,26 @@
           <span class="logo-sub">CYBER CLUB</span>
         </div>
       </a>
-      <ul class="nav-links">
-        <li><a href="#hardware">Характеристики</a></li>
-        <li><a href="#prices">Цены и Тарифы</a></li>
-        <li><a href="#booking">Забронировать</a></li>
-        <li><a href="#contacts">Контакты</a></li>
+
+      <button class="mobile-menu-btn" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars" id="menuIcon"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hardware" onclick="toggleMenu()">Характеристики</a></li>
+        <li><a href="#prices" onclick="toggleMenu()">Цены</a></li>
+        <li><a href="#booking" onclick="toggleMenu()">Забронировать</a></li>
+        <li><a href="#contacts" onclick="toggleMenu()">Контакты</a></li>
       </ul>
-      <a href="#booking" class="nav-cta btn">Забронировать</a>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-bg-grid"></div>
+    <div class="glow-orb"></div>
     <div class="hero-content">
-      <div>
+      <div class="animate-on-scroll">
         <div class="hero-tag">
           <i class="fa-solid fa-location-dot"></i> г. Актау, 2-й микрорайон, 9 дом
         </div>
@@ -790,15 +964,16 @@
           <a href="#prices" class="btn btn-outline"><i class="fa-solid fa-list"></i> Посмотреть тарифы</a>
         </div>
       </div>
-      <div class="hero-logo-card">
+
+      <div class="hero-logo-card animate-on-scroll">
         <svg class="hero-logo-img" viewBox="0 0 100 100">
           <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="#00d2ff" stroke-width="3"/>
           <path d="M30 40 L50 25 L70 40 L60 70 L50 60 L40 70 Z" fill="#00d2ff" />
           <circle cx="42" cy="42" r="3" fill="#fff"/>
           <circle cx="58" cy="42" r="3" fill="#fff"/>
         </svg>
-        <h2 style="font-size: 1.8rem; margin-top: 1rem; color: #fff;">NOVA CLUB</h2>
-        <p style="color: var(--primary); font-size: 0.9rem; letter-spacing: 2px;" class="subtitle-font">NEXT GEN GAMING</p>
+        <h2 style="font-size: 1.6rem; margin-top: 1rem; color: #fff;">NOVA CLUB</h2>
+        <p style="color: var(--primary); font-size: 0.85rem; letter-spacing: 2px;" class="subtitle-font">NEXT GEN GAMING</p>
         <div class="hero-info-pills">
           <div class="info-pill">
             <i class="fa-solid fa-clock"></i>
@@ -815,14 +990,14 @@
 
   <!-- Hardware Section -->
   <section id="hardware">
-    <div class="section-header">
+    <div class="section-header animate-on-scroll">
       <h2 class="section-title">Характеристики ПК</h2>
       <p class="section-subtitle">Топовое железо для максимума FPS и плавного геймплея</p>
     </div>
 
     <div class="specs-grid">
       <!-- Standard Zone -->
-      <div class="spec-card">
+      <div class="spec-card animate-on-scroll">
         <span class="badge-zone badge-standard">STANDART</span>
         <div class="spec-header">
           <h3 class="spec-title">Standart Zone</h3>
@@ -881,7 +1056,7 @@
       </div>
 
       <!-- VIP Zone -->
-      <div class="spec-card vip">
+      <div class="spec-card vip animate-on-scroll">
         <span class="badge-zone badge-vip">VIP PRO</span>
         <div class="spec-header">
           <h3 class="spec-title" style="color: var(--gold);">VIP Zone</h3>
@@ -943,17 +1118,17 @@
 
   <!-- Prices Section -->
   <section id="prices">
-    <div class="section-header">
+    <div class="section-header animate-on-scroll">
       <h2 class="section-title">Цены и Тарифы</h2>
       <p class="section-subtitle">Официальный прайс-лист клуба NOVA</p>
     </div>
 
     <div class="pricing-grid">
       <!-- Standart Pricing -->
-      <div class="price-card">
+      <div class="price-card animate-on-scroll">
         <div class="price-card-header">
           <span class="badge-zone badge-standard">STANDART</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin-top: 0.5rem;">Standart Зал</h3>
+          <h3 style="font-size: 1.4rem; color: #fff; margin-top: 0.5rem;">Standart Зал</h3>
         </div>
         <div class="price-rows">
           <p class="price-time-slot"><i class="fa-regular fa-sun"></i> Дневное время (08:00 - 17:00)</p>
@@ -996,10 +1171,10 @@
       </div>
 
       <!-- VIP Pricing -->
-      <div class="price-card vip">
+      <div class="price-card vip animate-on-scroll">
         <div class="price-card-header">
           <span class="badge-zone badge-vip">VIP</span>
-          <h3 style="font-size: 1.5rem; color: var(--gold); margin-top: 0.5rem;">VIP Зал</h3>
+          <h3 style="font-size: 1.4rem; color: var(--gold); margin-top: 0.5rem;">VIP Зал</h3>
         </div>
         <div class="price-rows">
           <p class="price-time-slot"><i class="fa-regular fa-sun"></i> Дневное время (08:00 - 17:00)</p>
@@ -1045,14 +1220,14 @@
 
   <!-- Booking & Calculator Section -->
   <section id="booking">
-    <div class="section-header">
+    <div class="section-header animate-on-scroll">
       <h2 class="section-title">Калькулятор и Бронь</h2>
       <p class="section-subtitle">Рассчитай стоимость и отправь бронирование прямо в WhatsApp</p>
     </div>
 
-    <div class="calc-booking-container">
+    <div class="calc-booking-container animate-on-scroll">
       <div>
-        <h3 style="margin-bottom: 1.5rem; color: #fff;">Параметры игровой сессии</h3>
+        <h3 style="margin-bottom: 1.2rem; color: #fff; font-size: 1.2rem;">Параметры сессии</h3>
         <form id="bookingForm">
           <div class="form-group">
             <label class="form-label">Ваше Имя</label>
@@ -1093,8 +1268,8 @@
 
       <div class="calc-summary">
         <div>
-          <h3 style="color: #fff; margin-bottom: 1rem;">Итого к оплате</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Расчет производится автоматически по тарифной сетке клуба NOVA.</p>
+          <h3 style="color: #fff; margin-bottom: 0.8rem; font-size: 1.2rem;">Итого к оплате</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Расчет производится автоматически по официальной тарифной сетке клуба NOVA.</p>
         </div>
 
         <div class="total-price-display">
@@ -1109,21 +1284,21 @@
     </div>
   </section>
 
-  <!-- Contacts & Map Section -->
+  <!-- Contacts Section -->
   <section id="contacts">
-    <div class="section-header">
+    <div class="section-header animate-on-scroll">
       <h2 class="section-title">Контакты и Локация</h2>
       <p class="section-subtitle">Ждем тебя в клубе NOVA!</p>
     </div>
 
     <div class="contacts-grid">
-      <div class="contact-card">
+      <div class="contact-card animate-on-scroll">
         <div class="contact-item">
           <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
           <div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">АДРЕС</div>
-            <a href="https://maps.google.com/?q=43.6375253,51.1725201" target="_blank" style="font-size: 1.1rem; font-weight: 700; color: #fff;">
-              г. Актау, 2-й микрорайон, 9 дом <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem; color: var(--primary);"></i>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">АДРЕС</div>
+            <a href="https://maps.google.com/?q=43.6375253,51.1725201" target="_blank" style="font-size: 1rem; font-weight: 700; color: #fff;">
+              г. Актау, 2-й микрорайон, 9 дом <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem; color: var(--primary);"></i>
             </a>
           </div>
         </div>
@@ -1131,33 +1306,40 @@
         <div class="contact-item">
           <div class="contact-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">WHATSAPP / БРОНЬ</div>
-            <a href="https://wa.me/77472190909" target="_blank" style="font-size: 1.1rem; font-weight: 700; color: #fff;">+7 747 219 0909</a>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">WHATSAPP / БРОНЬ</div>
+            <a href="https://wa.me/77472190909" target="_blank" style="font-size: 1rem; font-weight: 700; color: #fff;">+7 747 219 0909</a>
           </div>
         </div>
 
         <div class="contact-item">
           <div class="contact-icon"><i class="fa-brands fa-instagram"></i></div>
           <div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">INSTAGRAM</div>
-            <a href="https://www.instagram.com/nova_aktau/" target="_blank" style="font-size: 1.1rem; font-weight: 700; color: #fff;">@nova_aktau</a>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">INSTAGRAM</div>
+            <a href="https://www.instagram.com/nova_aktau/" target="_blank" style="font-size: 1rem; font-weight: 700; color: #fff;">@nova_aktau</a>
           </div>
         </div>
 
         <div class="contact-item" style="margin-bottom: 0;">
           <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
           <div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">РЕЖИМ РАБОТЫ</div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">Круглосуточно (24/7)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">РЕЖИМ РАБОТЫ</div>
+            <div style="font-size: 1rem; font-weight: 700; color: #fff;">Круглосуточно (24/7)</div>
           </div>
         </div>
       </div>
 
-      <div class="map-placeholder">
+      <div class="map-placeholder animate-on-scroll">
         <iframe src="https://maps.google.com/maps?q=43.6375253,51.1725201&z=19&output=embed"></iframe>
       </div>
     </div>
   </section>
+
+  <!-- Mobile Fixed Action Bar -->
+  <div class="mobile-fixed-bar">
+    <button type="button" class="btn btn-primary" onclick="sendWhatsApp()" style="width: 100%; padding: 0.8rem;">
+      <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Забронировать ПК
+    </button>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -1165,7 +1347,7 @@
       <div class="logo-container">
         <span class="logo-title">NOVA CYBER CLUB</span>
       </div>
-      <p style="color: var(--text-muted); font-size: 0.9rem;">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
         г. Актау, 2-й микрорайон, 9 дом | Тел: +7 747 219 0909
       </p>
       <div class="social-links">
@@ -1173,13 +1355,26 @@
         <a href="https://www.instagram.com/nova_aktau/" class="social-btn" target="_blank"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://maps.google.com/?q=43.6375253,51.1725201" class="social-btn" target="_blank"><i class="fa-solid fa-map-location-dot"></i></a>
       </div>
-      <p style="color: rgba(255, 255, 255, 0.2); font-size: 0.75rem; margin-top: 1rem;">
+      <p style="color: rgba(255, 255, 255, 0.2); font-size: 0.75rem; margin-top: 0.5rem;">
         &copy; 2026 NOVA Cyber Club Aktau. All Rights Reserved.
       </p>
     </div>
   </footer>
 
   <script>
+    // Toggle Mobile Navigation Menu
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      const menuIcon = document.getElementById('menuIcon');
+      navLinks.classList.toggle('active');
+      if (navLinks.classList.contains('active')) {
+        menuIcon.className = 'fa-solid fa-xmark';
+      } else {
+        menuIcon.className = 'fa-solid fa-bars';
+      }
+    }
+
+    // Official Tariffs Matrix
     const prices = {
       standart: {
         day_1: 600,
@@ -1231,6 +1426,19 @@
       const encodedMessage = encodeURIComponent(message);
       window.open(`https://wa.me/77472190909?text=${encodedMessage}`, '_blank');
     }
+
+    // Scroll Animations Trigger
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
 
     calculateTotal();
   </script>
