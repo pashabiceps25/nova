@@ -1296,4 +1296,152 @@
         </div>
 
         <div class="contact-item">
-          <div class
+          <div class="contact-icon"><i class="fa-solid fa-map-pin"></i></div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">НАВИГАЦИЯ 2ГИС</div>
+            <a href="https://go.2gis.com/DoPLs" target="_blank" style="font-size: 1rem; font-weight: 700; color: #fff;">Открыть NOVA в 2ГИС</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">WHATSAPP / БРОНЬ</div>
+            <a href="https://wa.me/77472190909" target="_blank" style="font-size: 1rem; font-weight: 700; color: #fff;">+7 747 219 0909</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa-brands fa-instagram"></i></div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">INSTAGRAM</div>
+            <a href="https://www.instagram.com/nova_aktau/" target="_blank" style="font-size: 1rem; font-weight: 700; color: #fff;">@nova_aktau</a>
+          </div>
+        </div>
+
+        <div class="contact-item" style="margin-bottom: 0;">
+          <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">РЕЖИМ РАБОТЫ</div>
+            <div style="font-size: 1rem; font-weight: 700; color: #fff;">Круглосуточно (24/7)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-placeholder animate-on-scroll">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2887.5115025288546!2d51.16994517617597!3d43.63752527110281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x41b433a9c17d83bf%3A0xd53ca02be7509970!2sNova!5e0!3m2!1sru!2skz!4v1791787441279!5m2!1sru!2skz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile Fixed Action Bar -->
+  <div class="mobile-fixed-bar">
+    <button type="button" class="btn btn-primary" onclick="sendWhatsApp()" style="width: 100%; padding: 0.8rem;">
+      <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Забронировать ПК
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="logo-container">
+        <span class="logo-title">NOVA CYBER CLUB</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        г. Актау, 2-й микрорайон, 9 дом | Тел: +7 747 219 0909
+      </p>
+      <div class="social-links">
+        <a href="https://wa.me/77472190909" class="social-btn" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/nova_aktau/" class="social-btn" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://go.2gis.com/DoPLs" class="social-btn" target="_blank" title="2GIS"><i class="fa-solid fa-map-pin"></i></a>
+        <a href="https://maps.google.com/?q=43.6375253,51.1725201" class="social-btn" target="_blank" title="Google Maps"><i class="fa-solid fa-map-location-dot"></i></a>
+      </div>
+      <p style="color: rgba(255, 255, 255, 0.2); font-size: 0.75rem; margin-top: 0.5rem;">
+        &copy; 2026 NOVA Cyber Club Aktau. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle Mobile Navigation Menu
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      const menuIcon = document.getElementById('menuIcon');
+      navLinks.classList.toggle('active');
+      if (navLinks.classList.contains('active')) {
+        menuIcon.className = 'fa-solid fa-xmark';
+      } else {
+        menuIcon.className = 'fa-solid fa-bars';
+      }
+    }
+
+    // Official Tariffs Matrix
+    const prices = {
+      standart: {
+        day_1: 600,
+        day_3: 1200,
+        day_5: 1800,
+        night_1: 800,
+        night_3: 1600,
+        night_5: 2400,
+        pkg_day: 2200,
+        pkg_night: 3000
+      },
+      vip: {
+        day_1: 1000,
+        day_3: 2000,
+        day_5: 3000,
+        night_1: 1200,
+        night_3: 2400,
+        night_5: 3600,
+        pkg_day: 3400,
+        pkg_night: 4200
+      }
+    };
+
+    function calculateTotal() {
+      const zone = document.getElementById('zoneSelect').value;
+      const timeSlot = document.getElementById('timeSelect').value;
+      const cost = prices[zone][timeSlot];
+      
+      document.getElementById('totalPrice').innerText = cost.toLocaleString() + ' KZT';
+      return cost;
+    }
+
+    function sendWhatsApp() {
+      const name = document.getElementById('custName').value.trim() || 'Клиент';
+      const zone = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
+      const tariff = document.getElementById('timeSelect').options[document.getElementById('timeSelect').selectedIndex].text;
+      const time = document.getElementById('custTime').value.trim() || 'Ближайшее время';
+      const total = calculateTotal();
+
+      const message = `Здравствуйте, NOVA Cyber Club!\n\n` +
+                      `Хочу забронировать ПК:\n` +
+                      `👤 Имя: ${name}\n` +
+                      `🖥 Зона: ${zone}\n` +
+                      `⏱ Тариф: ${tariff}\n` +
+                      `📅 Время: ${time}\n` +
+                      `💰 Сумма: ${total} KZT\n\n` +
+                      `Подтвердите, пожалуйста, бронь.`;
+
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/77472190909?text=${encodedMessage}`, '_blank');
+    }
+
+    // Scroll Animations Trigger
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
+
+    calculateTotal();
+  </script>
+</body>
+</html>
